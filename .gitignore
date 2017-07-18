@@ -1,0 +1,9 @@
+*.DS_Store
+*.aux
+*.swp
+*.vo
+*.glob
+.depend
+auto/
+.#*
+.lia.cache

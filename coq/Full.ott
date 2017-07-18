@@ -1,0 +1,215 @@
+% ---------- Syntax ----------
+
+metavar x, y, z, X, Y, Z ::= {{ com Variables }} {{ repr-locally-nameless }}
+
+grammar
+trm, e, A, B, C :: 'trm_' ::= {{ com Expression }}
+ | x                     ::   :: var   {{ com Variable }}
+ | *                     ::   :: star  {{ com Type of Types }}
+ | Top                   ::   :: top   {{ com Top Value }}
+ | e1 e2                 ::   :: app   {{ com Application }}
+ | \ x <: e1 : A . e2    ::   :: abs   (+ bind x in e2 +) {{ com Abstraction }}
+ | Pi x <: e : A . B     ::   :: prod  (+ bind x in B +) {{ com Product }}
+ | castup [ A ] e        ::   :: castup {{ com Up Cast }}
+ | castdn e              ::   :: castdn {{ com Down Cast }}
+ | ( e : A )             ::   :: anno   {{ com Annotation }}
+ | ( e )                 :: S :: parens {{ coq ([[e]]) }}
+ | e1 [ x := e2 ]        :: M :: subst {{ coq (open_trm_wrt_trm [[x e1]] [[e2]]) }}
+ | \ x : A . e           :: M :: NAbs {{ coq trm_abs trm_top ([[A]]) ([[e]]) }}
+ | Pi x : A . B          :: M :: NProd {{ coq trm_prod trm_top ([[A]]) ([[B]]) }}
+ | A -> B                :: M :: Arrow {{ coq trm_prod trm_top ([[A]]) ([[B]]) }}
+
+binding, b :: bind_ ::= {{ com Binding }}
+  | <: e : A ::   :: sub {{ com Subtyping }}
+
+substitutions
+  single e x :: subst
+
+freevars
+  e x :: fv
+
+grammar
+env, G {{ tex \Gamma }} :: 'ctx_' ::= {{ com Context }} {{ coq LibEnv.env binding }}
+ | nil                  ::   :: Nil     {{ com Empty }} {{ coq empty }}
+ | G , x b              ::   :: Binding {{ com Binding }} {{ coq ([[G]] & [[x]]~[[b]]) }}
+
+formula :: 'formula_' ::=
+ | judgement            ::   :: judgement
+ | \\ formula           ::   :: newline {{ coq [[formula]] }}
+ | ( formula )          ::   :: parens {{ coq [[formula]] }}
+ | x b in G             ::   :: binds {{ coq binds ([[x]]) ([[b]]) ([[G]]) }}
+ | x # G                ::   :: fresh {{ coq ([[x]] # ([[G]])) }} {{ tex [[x]] \text{~fresh in~} [[G]] }}
+ | G |- e : A           ::   :: typingsugar {{ coq sub ([[G]]) ([[e]]) ([[e]]) ([[A]]) }}
+
+terminals :: 'terminals_' ::=
+ | \      ::   :: lambda    {{ tex \lambda }}
+ | Pi     ::   :: pi        {{ tex \Pi }}
+ | .      ::   :: dot       {{ tex .~ }}
+ | ]      ::   :: rbracket  {{ tex ]~ }}
+ | *      ::   :: star      {{ tex \star }}
+ | Top    ::   :: top       {{ tex \top }}
+ | nil    ::   :: nil       {{ tex \varnothing }}
+ | castup ::   :: castup    {{ tex \mathsf{cast}_\uparrow }}
+ | castdn ::   :: castdn    {{ tex \mathsf{cast}_\downarrow }}
+ | ->     ::   :: to        {{ tex \rightarrow }}
+ | :=     ::   :: subst     {{ tex \mapsto }}
+ | |-     ::   :: turnstile {{ tex \vdash }}
+ | <:     ::   :: sub       {{ tex \leq }}
+ | in     ::   :: in        {{ tex \in }}
+ | -->    ::   :: red       {{ tex \hookrightarrow }}
+ | \\     ::   :: newline   {{ tex \ottlinebreak }}
+
+% ---------- Reduction ----------
+
+defns 
+Jop :: '' ::=
+
+defn 
+e1 --> e2 ::   :: reduct :: 'reduct_' {{ com Weak-head Reduction }}
+by
+
+----------------------------------- :: beta
+(\x<:e3:A . e1) e2 --> e1 [x := e2]
+
+e1 --> e1'
+---------------- :: app
+e1 e2 --> e1' e2
+
+e1 --> e1'
+------------------------ :: castdn
+castdn e1 --> castdn e1'
+
+-------------------------- :: castelim
+castdn (castup[A] e) --> e
+
+% ---------- Subtyping ----------
+
+defns 
+Jsub :: '' ::=
+
+defn 
+G |- e1 <: e2 : A ::   :: sub :: 'sub_' {{ com Unified Subtyping }}
+by
+
+|- G
+--------------- :: ax
+G |- * <: * : *
+
+|- G
+x <: e : A in G
+--------------- :: var_refl
+G |- x <: x : A
+
+x <: e1 : A in G
+G |- e1 <: e2 : A
+----------------- :: var_trans
+G |- x <: e2 : A
+
+G |- e : A
+----------------- :: top
+G |- e <: Top : A
+
+G |- A : *
+------------------- :: top_refl
+G |- Top <: Top : A
+
+G |- e1 : A
+G |- A : *
+\\ G, x<:e1:A |- e2 <: e2' : B
+G, x<:e1:A |- B : *
+--------------------------------------------------------- :: abs
+G |- (\x<:e1:A . e2) <: (\x<:e1:A . e2') : Pi x<:e1:A . B
+
+G |- e1 <: e2 : Pi x<:e3 : B . C
+G |- A <: e3 : B
+-------------------------------- :: app
+G |- e1 A <: e2 A : C [x := A]
+
+G |- A' <: A : *
+G |- e' <: e : A
+G |- A : *
+\\ G, x<:e:A |- B : *
+G, x<:e':A' |- B <: B' : *
+\\ G |- e : A
+G |- e' : A'
+---------------------------------------------- :: prod
+G |- (Pi x<:e:A . B) <: (Pi x<:e':A' . B') : *
+
+G |- B : *
+G |- e1 <: e2 : A
+B --> A
+------------------------------------- :: castup
+G |- castup[B] e1 <: castup[B] e2 : B
+
+G |- B : *
+G |- e1 <: e2 : A
+A --> B
+------------------------------- :: castdn
+G |- castdn e1 <: castdn e2 : B
+
+G |- e1 <: e2 : A
+G |- A <: B : *
+------------------------- :: sub
+G |- e1 <: e2 : B
+
+defn 
+|- G ::   :: wf :: 'wf_' {{ com Well-formedness }}
+by
+
+------ :: nil
+|- nil
+
+G |- e : A
+G |- A : *
+x # G      
+------------ :: cons
+|- G, x<:e:A
+
+% ---------- Inert Terms ----------
+
+defns 
+Jivalue :: '' ::=
+
+defn
+e ival  ::   :: ivalue :: 'ivalue_' {{ com Inert Terms }}
+by
+
+-------- :: top
+Top ival
+
+------ :: var
+x ival
+
+e1 ival
+---------- :: app
+e1 e2 ival
+
+e ival
+------------- :: castdn
+castdn e ival
+
+% ---------- Values ----------
+
+defns 
+Jvalue :: '' ::=
+
+defn
+e val  ::   :: value :: 'value_' {{ com Value }}
+by
+
+----- :: star
+* val
+
+e ival
+------ :: ivalue
+e val
+
+----------------------  :: abs
+\ x <: e1 : A . e2 val
+
+---------------------  :: prod
+Pi x <: e : A . B val
+
+------------------  :: castup
+castup [ A ] e val
+
