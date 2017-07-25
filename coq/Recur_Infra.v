@@ -468,7 +468,14 @@ Lemma fv_open_var : forall y x t,
   x <> y -> x \notin fv (t ^ y) -> x \notin fv t.
 Proof.
   introv Neq. unfold open_trm_wrt_trm. generalize 0. 
-  induction t; simpl; intros; try notin_solve; autos*.
+  induction t; simpl; intros; try notin_solve.
+  specializes IHt1 n. auto. specializes IHt2 n. auto.
+  specializes IHt1 n. auto. specializes IHt2 n. auto. specializes IHt3 (S n). auto.
+  specializes IHt1 n. auto. specializes IHt2 n. auto. specializes IHt3 (S n). auto.
+  specializes IHt1 n. auto. specializes IHt2 (S n). auto.
+  specializes IHt1 n. auto. specializes IHt2 n. auto.
+  specializes IHt n. auto.
+  specializes IHt1 n. auto. specializes IHt2 n. auto.
 Qed.
 
 Lemma fresh_false : forall G x (v:binding),

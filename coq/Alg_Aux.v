@@ -263,7 +263,9 @@ Lemma tsub_fresh : forall E A B x,
   _sub E A B -> x # E -> x \notin fv A -> x \notin fv B.
 Proof.
   introv S. induction S; simpls; intros; try solve [eauto 3].
-  apply* IHS. rewrite notin_singleton in *. apply* notin_fv_from_tbinds_left.
+  apply* IHS. rewrite notin_singleton in *.
+    apply notin_fv_from_tbinds_left with (y := x0) (U := A) (E := G).
+    auto. auto. auto.
   notin_simpl; auto; try solve [apply* typing_fresh].
     pick_fresh y. apply~ (@fv_open_var y). apply* H2.
     apply* fv_close_var.

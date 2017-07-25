@@ -333,7 +333,7 @@ Proof.
     apply* notin_fv_from_wf.
     assert ([x ~> v] e = e).
     apply* subst_fresh.
-    apply* notin_fv_from_wf_left.
+    apply notin_fv_from_wf_left with (E := E) (F := F) (T := V). auto.
     rewrite <- H1. auto.
     lets: H F __. auto.
     apply sub_var_trans with (e1 := ([x ~> v]e1)). auto.
@@ -341,7 +341,10 @@ Proof.
     rewrite* substenv_eq.
     asserts* w: (wf (E & x ~ bind_sub e V & F)).
     lets: wf_left (wf_left w).
-    asserts* N: (x # E).
+    asserts N: (x # E).
+    lets: (wf_left w).
+    inversions H2. false (empty_push_inv H4). 
+    destruct (eq_push_inv H3) as [? [? ?]]. inversion H7. subst~.
     destruct~ (notin_fv_from_binds H1 K N).
     rewrite* subst_fresh.
     rewrite* subst_fresh.
@@ -524,7 +527,8 @@ Proof.
   inductions S2; eauto 3.
   (* case: app *)
   clear IHS1_1 IHS1_2 IHW2 W1 W2.
-  inductions S2. autos*.
+  inductions S2. apply~ sub_top.
+  apply sub_app with (B := B) (e3 := e4). auto. auto.
   apply sub_app with (B := B) (e3 := e4). apply* IHW1. auto.
   apply* IHS2_1.
   (* case lam *)
@@ -568,11 +572,15 @@ Proof.
   inductions S2; autos*.
   (* case: castup *)
   clear IHS1_1 IHS1_2 W1 W2 IHW1.
-  inductions S2. autos*. apply* sub_castup.
+  inductions S2. apply~ sub_top.
+  apply sub_castup with (A := A0). auto. auto. auto.
+  apply* sub_castup.
   apply* IHS2_1.
   (* case: castdn *)
   clear IHS1_1 IHS1_2 W.
-  inductions S2. autos*. apply* sub_castdn.
+  inductions S2. apply~ sub_top.
+  apply sub_castdn with (A := A). auto. auto. auto.
+  apply* sub_castdn.
   apply* IHS2_1.
 Qed.
 
@@ -892,16 +900,16 @@ Proof.
   lets: (sub_top_any_inv H4). subst.
   asserts* W: (ivalue (trm_app trm_top K2)).
   false (ivalue_cannot_red W R2).
-  exists (J3 ^^ A). apply* reduct_beta. apply* lc_trm_abs0.
-  apply* lc_trm_abs1.
+  exists (J3 ^^ A).  asserts~ Q: (lc_trm (trm_abs J1 J2 J3)).
+  apply* reduct_beta.
   destruct (sub_app_any_inv S) as [? | [K1 [K2 ?]]]; subst.
   inversions R2.
   destruct (sub_app_inv S) as [e3' [B' [C' (?&?&?)]]].
   inversions R2.
   destruct (sub_any_abs_inv H2) as [[x ?] | [J1 [J2 [J3 ?]]]]; subst.
   destruct (sub_any_var_inv H1_); subst. inversions H3.
-  exists (J3 ^^ K2). apply* reduct_beta. apply* lc_trm_abs0.
-  apply* lc_trm_abs1.
+  exists (J3 ^^ K2). asserts~ Q: (lc_trm (trm_abs J1 J2 J3)).
+  apply* reduct_beta.
   lets P: sub_typekeep (sub_refl_right H1_) H2.
   lets P1: IHsub1 H3 P H8.
   destruct P1 as [e2' ?].

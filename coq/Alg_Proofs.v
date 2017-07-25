@@ -743,13 +743,13 @@ Proof.
   (* abs *)
   pick_fresh y. destructs~ (H2 y).
   rewrite open_rem_comm in *. simpl in *.
-  apply* open_var_inj. apply* rem_not_fv.
+  apply* open_var_inj. apply* rem_not_fv. auto.
   pick_fresh y. destructs~ (H2 y).
   rewrite open_rem_comm in *. simpl in *.
-  apply* open_var_inj. apply* rem_not_fv.
+  apply* open_var_inj. apply* rem_not_fv. auto.
   pick_fresh y. destructs~ (H2 y).
   rewrite open_rem_comm in *. simpl in *.
-  apply* open_var_inj. apply* rem_not_fv.
+  apply* open_var_inj. apply* rem_not_fv. auto.
   (* app *)
   rewrite* open_rem_comm.
   fequals*.
@@ -757,10 +757,10 @@ Proof.
   (* prod *)
   pick_fresh y. destructs~ (H1 y).
   rewrite open_rem_comm in *. simpl in *.
-  apply* open_var_inj. apply* rem_not_fv.
+  apply* open_var_inj. apply* rem_not_fv. auto.
   pick_fresh y. destructs~ (H1 y).
   rewrite open_rem_comm in *. simpl in *.
-  apply* open_var_inj. apply* rem_not_fv.
+  apply* open_var_inj. apply* rem_not_fv. auto.
   (* env nil *)
   rewrite* map_empty.
   (* env push *)
@@ -881,7 +881,7 @@ Proof.
   destructs (typing_era H12).
   rewrite open_rem_comm in *. simpl in *.
   assert ([#B#] = B).
-  apply* open_var_inj. apply* rem_not_fv.
+  apply* open_var_inj. apply* rem_not_fv. auto.
   rewrite <- H17.
   apply_fresh* dtyping_lam as y. rewrite~ H8.
   rewrite H4. rewrite H8. rewrite~ H17.
