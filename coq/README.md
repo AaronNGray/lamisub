@@ -81,7 +81,7 @@ commands like `tar` and `make`.
 
 The dependencies for compilation are as follows:
 
-- Coq 8.6
+- Coq 8.6 (*not 8.6.1 or 8.6.x*)
 - GNU Make
 - Perl 5
 - Ott 0.25 (**optional**, requires Git and OCaml)
