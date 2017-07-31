@@ -61,8 +61,8 @@ commands like `tar` and `make`.
 
 1. Unpack and change directory to the repository package:
 
-        wget https://bitbucket.org/ypyang/oopsla17/get/coq-8.6.1.tar.gz
-        tar zxvf ypyang-oopsla17-*.tar.gz
+        wget -O proof.tgz https://bitbucket.org/ypyang/oopsla17/get/coq-8.6.1.tar.gz
+        tar zxvf proof.tgz
         cd ypyang-oopsla17-*/coq
 
 2. Build Docker image from the repository:
@@ -111,8 +111,8 @@ example. Steps are similar for other Linux distros, Unix-like systems
 
 3. Unpack and change directory to the repository package:
 
-        wget https://bitbucket.org/ypyang/oopsla17/get/master.tar.gz
-        tar zxvf master.tar.gz
+        wget -O proof.tgz https://bitbucket.org/ypyang/oopsla17/get/coq-8.6.1.tar.gz
+        tar zxvf proof.tgz
         cd ypyang-oopsla17-*/coq
 
 4. Test the repository (without re-generating definition files):
