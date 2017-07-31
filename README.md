@@ -1,10 +1,11 @@
 # Unifying Typing and Subtyping
-Extended version and online materials
+Extended version and online materials   
+(*This paper is still under review*)
 
 ---------
 
 ## Extended version 
-See [paper-extended.pdf](paper-extended.pdf) ([slides](slides.pdf)).
+See [paper-extended.pdf](paper-extended.pdf).
 Extra materials are provided in the Appendix section.
 
 ## Coq formalization of proofs

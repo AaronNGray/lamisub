@@ -81,7 +81,7 @@ commands like `tar` and `make`.
 
 The dependencies for compilation are as follows:
 
-- Coq 8.6
+- Coq 8.6 (*not 8.6.1 or 8.6.x*)
 - GNU Make
 - Perl 5
 - Ott 0.25 (**optional**, requires Git and OCaml)
@@ -93,7 +93,7 @@ example. Steps are similar for other Linux distros, Unix-like systems
 1. Install prerequisites (Coq 8.6, GNU Make, Perl 5):
 
         sudo apt-get update
-        sudo apt-get install coq make perl
+        sudo apt-get install coq=8.6-* make perl
 
 2. Compile the Ott tool (**optional**, requires OCaml and Git):
 
@@ -142,7 +142,8 @@ variants of the $\lambda I_\leq$ calculus, namely `Main`, `Recur` and
         G |- (/x:A . e) <: (/x:A . e) : A
 
     which corresponds to the discussion in "Recursion and Recursive
-    Types" of Section 7.
+    Types" of Section 7.    
+    
 - The `Full` variant uses a full contravariant subtyping rule for Pi
   types, which subsumes the subtyping rule of universal types in Full
   System $F$:
@@ -160,18 +161,17 @@ variants of the $\lambda I_\leq$ calculus, namely `Main`, `Recur` and
 Each variant contains 1 Ott definition and 3 Coq files (`@` stands for
 the name of variant):
 
-- `@.ott` is the Ott definition of type systems which is written in
+* `@.ott` is the Ott definition of type systems which is written in
   readable ASCII text, including syntax (Section 3.1), operational
   semantics (Section 3.2) and static semantics (Section 3.3). For
   details of Ott syntax, please refer to
   its [website](http://www.cl.cam.ac.uk/~pes20/ott/)
   or [developer page](https://github.com/ott-lang/ott).
-
-- `@_ott.v` is the Coq definition file generated from `@.ott` file
+* `@_ott.v` is the Coq definition file generated from `@.ott` file
   using *locally nameless representation*.
-- `@_Infra.v` is the infrastructure file, which contains basic
+* `@_Infra.v` is the infrastructure file, which contains basic
   supporting lemmas for locally nameless representation.
-- `@_Proofs.v` is proofs for the metatheory (Section 4), including
+* `@_Proofs.v` is proofs for the metatheory (Section 4), including
   transitivity and type safety.
 
 There are two more files starting with `Alg` which are proofs for the
