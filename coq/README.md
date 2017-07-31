@@ -95,8 +95,8 @@ example. Steps are similar for other Linux distros, Unix-like systems
         sudo apt-get update
         sudo apt-get install make perl
 
-    Coq 8.6.1 can be obtained from the [official website]
-    (https://coq.inria.fr/distrib/V8.6.1/files/coq-8.6.1.tar.gz).
+    Coq 8.6.1 can be obtained from the 
+    [official website](https://coq.inria.fr/distrib/V8.6.1/files/coq-8.6.1.tar.gz).
 
 2. Compile the Ott tool (**optional**, requires OCaml and Git):
 
