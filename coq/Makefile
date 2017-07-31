@@ -3,7 +3,7 @@ OTT = ott
 PERL = perl
 OTT_OPTS  = -tex_show_meta false
 WARN_MSG = "%%% !!! WARNING: AUTO GENERATED. DO NOT MODIFY !!! %%%\n"
-DOCKERIMAGE = ypyang/lamisub
+DOCKERIMAGE = ypyang/lamisub:coq-8.6.1
 
 COQPREFIX =
 INCLUDES = -R $(METALIB) TLC

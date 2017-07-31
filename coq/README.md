@@ -3,7 +3,7 @@
 ## Getting Started Guide
 
 The repository consists of Coq proofs of the paper. Its correctness can
-be checked by the Coq theorem prover (version 8.6). The repository
+be checked by the Coq theorem prover (version 8.6.1). The repository
 passes the test if all Coq files can be compiled without any error
 messages, which indicates Coq proofs are machine-checked without
 issues. The following guide is to prepare the environment to compile
@@ -38,13 +38,13 @@ Windows and macOS.
 
 1. Download the pre-built Docker image from Docker Hub:
 
-        docker pull ypyang/lamisub
+        docker pull ypyang/lamisub:coq-8.6.1
 
     The image to download is ~300 megabytes.
 
 2. Start a shell from the image:
 
-        docker run -it --rm ypyang/lamisub
+        docker run -it --rm ypyang/lamisub:coq-8.6.1
 
 3. Test the repository:
 
@@ -61,8 +61,8 @@ commands like `tar` and `make`.
 
 1. Unpack and change directory to the repository package:
 
-        wget https://bitbucket.org/ypyang/oopsla17/get/master.tar.gz
-        tar zxvf master.tar.gz
+        wget https://bitbucket.org/ypyang/oopsla17/get/coq-8.6.1.tar.gz
+        tar zxvf ypyang-oopsla17-*.tar.gz
         cd ypyang-oopsla17-*/coq
 
 2. Build Docker image from the repository:
@@ -81,7 +81,7 @@ commands like `tar` and `make`.
 
 The dependencies for compilation are as follows:
 
-- Coq 8.6 (*not 8.6.1 or 8.6.x*)
+- Coq 8.6.1 (*not 8.6 or any newer version*)
 - GNU Make
 - Perl 5
 - Ott 0.25 (**optional**, requires Git and OCaml)
@@ -90,10 +90,13 @@ We use the latest Debian stable release (9.0, Stretch) as an
 example. Steps are similar for other Linux distros, Unix-like systems
 (e.g., macOS and BSD) and Cygwin (for Windows).
 
-1. Install prerequisites (Coq 8.6, GNU Make, Perl 5):
+1. Install prerequisites:
 
         sudo apt-get update
-        sudo apt-get install coq=8.6-* make perl
+        sudo apt-get install make perl
+
+    Coq 8.6.1 can be obtained from the [official website]
+    (https://coq.inria.fr/distrib/V8.6.1/files/coq-8.6.1.tar.gz).
 
 2. Compile the Ott tool (**optional**, requires OCaml and Git):
 

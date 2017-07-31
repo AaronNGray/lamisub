@@ -1,12 +1,27 @@
 # Based on Debian Stretch
 FROM debian:stretch
 
-# Install Coq environment
+# Basic tools
 RUN \
   apt-get update && \
-  apt-get --no-install-recommends install -y coq=8.6-* make git ocaml-nox vim && \
+  apt-get --no-install-recommends install -y \
+    make git ocaml-nox ocaml-findlib camlp5 vim wget && \
   apt-get clean && \
   rm -Rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Compile Coq
+RUN \
+  export COQVER=8.6.1 && \
+  cd / && \
+  wget --no-check-certificate \
+    https://github.com/coq/coq/archive/V$COQVER.tar.gz \
+    -O coq.tar.gz && \
+  tar zxf coq.tar.gz && \
+  cd coq-* && \
+  ./configure -prefix /usr -nodoc -coqide no -usecamlp5 && \
+  make -j$(grep -c ^processor /proc/cpuinfo) && \
+  make install && \
+  cd / && rm -Rf coq-* coq.tar.gz
 
 # Compile ott
 RUN \
