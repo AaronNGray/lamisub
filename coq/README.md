@@ -182,7 +182,7 @@ results of soundness and completeness to the declarative system
 (Section 5) can be found at the end of the file.
 
 The folder `tlc` contains the "TLC" Coq library written by Arthur
-Charguéraud, et al. for supporting locally nameless
+CharguÃ©raud, et al. for supporting locally nameless
 representation. Detailed version and license information is included
 in [`tlc/README.md`](tlc/README.md).
 
