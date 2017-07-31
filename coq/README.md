@@ -93,7 +93,7 @@ example. Steps are similar for other Linux distros, Unix-like systems
 1. Install prerequisites (Coq 8.6, GNU Make, Perl 5):
 
         sudo apt-get update
-        sudo apt-get install coq make perl
+        sudo apt-get install coq=8.6-* make perl
 
 2. Compile the Ott tool (**optional**, requires OCaml and Git):
 

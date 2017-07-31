@@ -4,7 +4,7 @@ FROM debian:stretch
 # Install Coq environment
 RUN \
   apt-get update && \
-  apt-get --no-install-recommends install -y coq make git ocaml-nox vim && \
+  apt-get --no-install-recommends install -y coq=8.6-* make git ocaml-nox vim && \
   apt-get clean && \
   rm -Rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
