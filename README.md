@@ -1,6 +1,7 @@
 # Unifying Typing and Subtyping
-Extended version and online materials   
-(*This paper is still under review*)
+Extended version and supplementary materials
+
+https://bitbucket.org/ypyang/oopsla17
 
 ---------
 
