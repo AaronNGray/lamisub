@@ -6,7 +6,7 @@ https://bitbucket.org/ypyang/oopsla17
 ---------
 
 ## Extended version 
-See [paper-extended.pdf](paper-extended.pdf).
+See [paper-extended.pdf](paper-extended.pdf) ([slides](slides.pdf)).
 Extra materials are provided in the Appendix section.
 
 ## Coq formalization of proofs
